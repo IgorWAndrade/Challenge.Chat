@@ -26,7 +26,7 @@ namespace IWA.Challenge.Chat.Infra.Data.Repositories
         {
             try
             {
-                await _context.StartTransaction();
+                //await _context.StartTransaction();
                 var obj = await _dbSet.AddAsync(entidade);
                 await _context.Commit();
                 return obj.Entity.Id;
@@ -85,6 +85,11 @@ namespace IWA.Challenge.Chat.Infra.Data.Repositories
         public async Task<T> GetById(int id)
         {
             return await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public IQueryable<T> QueriableExpression(Expression<Func<T, bool>> expression)
+        {
+            return _dbSet.Where(expression);
         }
     }
 }

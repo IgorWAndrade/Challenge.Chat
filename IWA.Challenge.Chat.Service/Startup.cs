@@ -29,9 +29,9 @@ namespace IWA.Challenge.Chat.Service
 
             services.AddWebSocketService();
 
-            BootstrapInjector.Registrer(services);
+            services.AddAutoMapperService();
 
-            services.AddAutoMapper(x => x.AddProfile(new BaseMapping()));
+            BootstrapInjector.Registrer(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -46,6 +46,8 @@ namespace IWA.Challenge.Chat.Service
             app.AddWebSocketApp("/public", serviceProvider.GetService<ChatMessageHandler>());
 
             app.AddDataBaseApp();
+
+            app.AddAutoMapperApp();
 
             app.UseRouting();
 

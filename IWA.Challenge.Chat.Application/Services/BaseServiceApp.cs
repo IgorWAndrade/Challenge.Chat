@@ -5,7 +5,7 @@ using IWA.Challenge.Chat.Domain.Interfaces.Services;
 
 namespace IWA.Challenge.Chat.Application.Services
 {
-    public class BaseServiceApp<T> where T : BaseEntity, IBaseApp<T>
+    public class BaseServiceApp<T> : IBaseApp<T> where T : BaseEntity
     {
         protected readonly IBaseService<T> _service;
         protected readonly IMapper _mapper;

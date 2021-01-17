@@ -3,6 +3,7 @@ using IWA.Challenge.Chat.Domain.Interfaces.Repositories;
 using IWA.Challenge.Chat.Domain.Interfaces.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -44,6 +45,11 @@ namespace IWA.Challenge.Chat.Domain.Services
         public async Task<T> GetById(int id)
         {
             return await _repositorio.GetById(id);
+        }
+
+        public IQueryable<T> QueriableExpression(Expression<Func<T, bool>> expression)
+        {
+            return _repositorio.QueriableExpression(expression);
         }
     }
 }

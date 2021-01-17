@@ -1,0 +1,187 @@
+﻿@model IWA.Challenge.Chat.View.Razor.ViewModels.UsuarioPost
+
+<style>
+    [hidden] {
+        display: none !important;
+    }
+</style>
+
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h3><strong>Identificar</strong></h3>
+            <button type="button" class="close" aria-label="Close" onclick="Fechar()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-group">
+
+                @* Formulario *@
+                <div class="row">
+
+                    @*<div class="col-4">
+                            <div class="form-group">
+                                <label for="imgUser" class="ml-5 mt-5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="45" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
+                                        <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                        <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                    </svg>
+                                </label>
+                                <input type="file" class="form-control" id="imgUser" value="" hidden />
+                            </div>
+                        </div>*@
+
+                    <div class="m-2">
+
+                        <div class="form-group">
+                            <label for="Nome" class="control-label">@Html.DisplayNameFor(x => x.Nome)</label>
+                            <input for="Nome" id="Nome" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Apelido" class="control-label">@Html.DisplayNameFor(x => x.Apelido)</label>
+                            <input for="Apelido" id="Apelido" class="form-control" />
+                        </div>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" for="Anonimo" id="Anonimo" type="checkbox" /> @Html.DisplayNameFor(model => model.Anonimo)
+                            </label>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            @* Validações *@
+            <div class="row">
+                <div class="w-100">
+                    <div id="erroModalValidacoes" style="display:none">
+
+                    </div>
+
+                    <div id="informacoesModalSalvar" style="display:none">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info" onclick="Fechar()">Cancelar</button>
+            <button type="button" class="btn btn-success" id="btnAdicionar" onclick="Adicionar()">Salvar</button>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    function Base64Image(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    }
+
+    function Adicionar() {
+        let user = {
+            Nome: $("#Nome").val(),
+            Apelido: $("#Apelido").val(),
+            Foto: '',
+            Anonimo: $("#Anonimo").prop('checked')
+        };
+
+        if (ValidarCampos(user)) {
+            $.ajax({
+                url: MontarURL('Adicionar', 'Usuario'),
+                method: 'POST',
+                data: user,
+                async: true,
+                beforeSend: () => {
+                    EnviandoStart();
+                },
+                success: (data) => {
+
+                    var result = JSON.parse(data);
+                    if (result.sucesso == true) {
+                        return window.location.href = "Sala/Index?userName=" + result.data.nome;
+                    } else {
+                        $('#erroModalValidacoes').html('');
+                        let mensagem = `<div class="mt-2 alert alert-warning alert-dismissible" role="alert">
+                                    ${result.mensagem}
+                                </div>`;
+                        $('#erroModalValidacoes').css('display', 'block');
+                        $('#erroModalValidacoes').html(mensagem);
+                        EnviandoStop();
+                    }
+                },
+                complete: () => {
+                    if (Resultado == true) {
+                        Fechar();
+                    }
+                    EnviandoStop();
+                }
+            });
+        }
+
+    }
+
+    function Fechar() {
+        $('.modal').modal('hide');
+    }
+
+    function ValidarCampos(user) {
+        $('#erroModalValidacoes').html('');
+        let valido = true;
+        let mensagem = '';
+
+        if (!Validar(user.Nome) && !Validar(user.Apelido) && user.Anonimo == false) {
+            mensagem += `<div class="mt-2 alert alert-warning alert-dismissible" role="alert">
+                                    Para criar um usuario você precisa colocar um Nome ou colocar um Apelido ou ser Anonimo!
+                                </div>`;
+            valido = false;
+        }
+
+        if (valido) {
+            $('#erroModalValidacoes').css('display', 'none')
+        } else {
+            $('#erroModalValidacoes').css('display', 'block');
+        }
+        $('#erroModalValidacoes').html(mensagem);
+
+        return valido;
+    }
+
+    function EnviandoStart() {
+        $("#btnAdicionar").attr("disabled", "disabled");
+        $('#erroModalValidacoes').html('');
+
+        let mensagem = `<div class="mt-2 alert alert-warning alert-dismissible" role="alert">
+                                    Aguarde um momento enquanto enviamos as informações para sistema!
+                                </div>`;
+
+        $('#informacoesModalSalvar').css('display', 'block');
+        $('#informacoesModalSalvar').html(mensagem);
+    }
+
+    function EnviandoStop() {
+        $("#btnAdicionar").removeAttr("disabled");
+        $('#informacoesModalSalvar').css('display', 'none');
+        $('#informacoesModalSalvar').html('');
+    }
+
+</script>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

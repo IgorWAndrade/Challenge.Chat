@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\IWA.Challenge.Chat.Infra.CrossCutting\IWA.Challenge.Chat.Infra.CrossCutting.csproj" />
     <ProjectReference Include="..\IWA.Challenge.Chat.Infra.Data\IWA.Challenge.Chat.Infra.Data.csproj" />
   </ItemGroup>

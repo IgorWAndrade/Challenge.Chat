@@ -15,15 +15,21 @@
             </div>
         </nav>
     </header>
-    <div class="bg-info">
+    <div class="bg-red">
         <main role="main">
             @RenderBody()
         </main>
+    </div>
+
+    @*Modal Template *@
+    <div class="modal" id="modalTemplate" role="dialog">
+        <div id="partialViewTemplate">
+        </div>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
-</body>
+    </body>
 </html>

@@ -1,9 +1,9 @@
-﻿using IWA.Challenge.Chat.Infra.Data.Interfaces;
+﻿using IWA.Challenge.Chat.Domain.Entities;
+using IWA.Challenge.Chat.Infra.Data.Interfaces;
+using IWA.Challenge.Chat.Infra.Data.Mappings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace IWA.Challenge.Chat.Infra.Data.Contexto
@@ -17,6 +17,13 @@ namespace IWA.Challenge.Chat.Infra.Data.Contexto
         {
         }
 
+        #region DbSets
+
+        public DbSet<Usuario> Usuarios { get; set; }
+
+        #endregion
+
+        #region Metodos
         public async Task<IDbContextTransaction> StartTransaction()
         {
             if (_contextoTransaction == null)
@@ -37,7 +44,7 @@ namespace IWA.Challenge.Chat.Infra.Data.Contexto
         public async Task Commit()
         {
             await Save();
-            await PrepareCommit();
+            //await PrepareCommit();
         }
 
         private async Task PrepareCommit()
@@ -63,12 +70,17 @@ namespace IWA.Challenge.Chat.Infra.Data.Contexto
                 throw new Exception(ex.Message);
             }
         }
+        #endregion
+
+        #region Mapeamentos
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            //modelBuilder.ApplyConfiguration(new EntityMap());
+            modelBuilder.ApplyConfiguration(new UsuarioMap());
         }
+
+        #endregion
     }
 }
