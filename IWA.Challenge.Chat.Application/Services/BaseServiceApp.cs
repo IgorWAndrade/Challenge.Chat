@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
+using IWA.Challenge.Chat.Application.Interfaces;
 using IWA.Challenge.Chat.Domain.Entities;
 using IWA.Challenge.Chat.Domain.Interfaces.Services;
 
 namespace IWA.Challenge.Chat.Application.Services
 {
-    public class BaseServicoApp<T> where T : BaseEntity
+    public class BaseServiceApp<T> where T : BaseEntity, IBaseApp<T>
     {
         protected readonly IBaseService<T> _service;
         protected readonly IMapper _mapper;
 
-        public BaseServicoApp(
+        public BaseServiceApp(
             IBaseService<T> service,
             IMapper mapper) : base()
         {
