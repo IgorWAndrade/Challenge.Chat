@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using System;
 
 namespace IWA.Challenge.Chat.Service.Extension
 {
@@ -10,9 +9,11 @@ namespace IWA.Challenge.Chat.Service.Extension
         public static IApplicationBuilder AddSwaggerApp(this IApplicationBuilder app)
         {
             app.UseSwagger();
+
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API - Serviço de Bate-Papo");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                c.RoutePrefix = string.Empty;
             });
 
             return app;
@@ -20,7 +21,20 @@ namespace IWA.Challenge.Chat.Service.Extension
 
         public static IServiceCollection AddSwaggerService(this IServiceCollection services)
         {
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API",
+                    Description = "",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Igor Andrade",
+                        Email = string.Empty
+                    }
+                });
+            });
 
             return services;
         }

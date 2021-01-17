@@ -6,33 +6,62 @@
 <div class="page-content page-container" id="page-content">
     <div class="padding">
         <div class="row container d-flex justify-content-center">
-            <div class="col-md-9">
-                <div class="card card-bordered">
+            <div class="col-md-10">
+                <div class="card bg-white">
+
                     <div class="card-header">
-                        <div class="row">
-                            <div class="col-4">
-                                <h4 class="card-title"><strong>Chat</strong></h4>
+
+                        <div class="card-title">
+
+                            <div class="row">
+                                <h4 class="ml-5"><strong>Chat</strong></h4>
                             </div>
-                            <div class="col-6">
-                                <input type="text" class="form-control" placeholder="Digite seu nome" id="userName" />
+
+                            <div class="row">
+
+                                <div class="col-2">
+                                    <img src="~/img/takeBlip.jpg" width="100" height="100" />
+                                </div>
+
+                                <div class="col-10 mt-4">
+
+                                    <div class="row">
+
+                                        <div class="col-10">
+                                            <input type="text" class="form-control ml-3" placeholder="Digite seu Nome" id="userName" />
+                                        </div>
+
+                                        <div class="col-2">
+                                            <button type="button" class="btn btn-primary" onclick="openChat()">
+                                                Entrar
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                             </div>
-                            <div class="col-2">
-                                <button type="button" class="btn btn-sm btn-primary" onclick="openChat()">
-                                    Participar
-                                </button>
-                            </div>
+
                         </div>
-                    </div>
-                    <div class="ps-container ps-theme-default ps-active-y" id="chat-content" style="overflow-y: scroll !important; height:400px !important;">
 
                     </div>
-                    <div class="publisher bt-1 border-light">
-                        <img class="avatar avatar-xs" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
-                        <input class="publisher-input" type="text" placeholder="Digite sua Mensagem" id="MessageField">
-                        <button type="button" onclick="sendMessage()" class="btn btn-sm btn-dark text-info" id="sendMessage">
-                            Enviar
-                        </button>
+
+                    <div class="card-body">
+                        <div class="ps-container ps-theme-default ps-active-y" id="chat-content" style="overflow-y: scroll !important; height:400px !important;">
+                        </div>
                     </div>
+
+                    <div class="card-footer bg-white">
+                        <div class="publisher">
+                            <img class="avatar avatar-xs" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
+                            <input class="publisher-input form-control" type="text" placeholder="Digite sua Mensagem" id="MessageField">
+                            <button type="button" onclick="sendMessage()" class="btn btn-success text-light m-2" id="sendMessage">
+                                Enviar
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -77,19 +106,19 @@
 
         function createMessage(message) {
             return `<div class="media media-chat">
-                                    <img class="avatar" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
-                                    <div class="media-body">
-                                        <p>${message}</p>
-                                    </div>
-                                </div>`;
+                                                                        <img class="avatar" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
+                                                                        <div class="media-body">
+                                                                            <p>${message}</p>
+                                                                        </div>
+                                                                    </div>`;
         }
 
         function createReverseMessage(message) {
             return `<div class="media media-chat media-chat-reverse">
-                                    <div class="media-body">
-                                        <p>${message}</p>
-                                    </div>
-                                </div>`;
+                                                                        <div class="media-body">
+                                                                            <p>${message}</p>
+                                                                        </div>
+                                                                    </div>`;
         }
     </script>
 }

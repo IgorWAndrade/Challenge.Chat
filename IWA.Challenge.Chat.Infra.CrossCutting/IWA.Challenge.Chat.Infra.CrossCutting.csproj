@@ -12,7 +12,6 @@
     <ProjectReference Include="..\IWA.Challenge.Chat.Application\IWA.Challenge.Chat.Application.csproj" />
     <ProjectReference Include="..\IWA.Challenge.Chat.Domain\IWA.Challenge.Chat.Domain.csproj" />
     <ProjectReference Include="..\IWA.Challenge.Chat.Infra.Data\IWA.Challenge.Chat.Infra.Data.csproj" />
-    <ProjectReference Include="..\IWA.Challenge.Chat.Service\IWA.Challenge.Chat.Service.csproj" />
   </ItemGroup>
 
 </Project>
