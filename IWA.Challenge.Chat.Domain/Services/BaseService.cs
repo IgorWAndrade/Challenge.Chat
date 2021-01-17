@@ -8,13 +8,27 @@ using System.Threading.Tasks;
 
 namespace IWA.Challenge.Chat.Domain.Services
 {
-    public class BaseReadService<T> : IBaseReadService<T> where T : BaseEntity
+    public class BaseService<T> : IBaseService<T> where T : BaseEntity
     {
-        protected readonly IBaseReadRepository<T> _repositorio;
+        protected readonly IBaseRepository<T> _repositorio;
 
-        public BaseReadService(IBaseReadRepository<T> repositorio)
+        public BaseService(IBaseRepository<T> repositorio)
         {
             _repositorio = repositorio;
+        }
+        public async Task<int> Add(T entidade)
+        {
+            return await _repositorio.Add(entidade);
+        }
+
+        public async Task<T> Update(T entidade)
+        {
+            return await _repositorio.Update(entidade);
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            return await _repositorio.Delete(id);
         }
 
         public async Task<IEnumerable<T>> GetAll()

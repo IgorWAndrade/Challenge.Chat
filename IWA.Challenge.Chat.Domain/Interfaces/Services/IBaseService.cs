@@ -4,10 +4,16 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace IWA.Challenge.Chat.Domain.Interfaces.Repositories
+namespace IWA.Challenge.Chat.Domain.Interfaces.Services
 {
-    public interface IBaseReadRepository<T> where T : BaseEntity
+    public interface IBaseService<T> where T : BaseEntity
     {
+        Task<int> Add(T entidade);
+
+        Task<T> Update(T entidade);
+
+        Task<bool> Delete(int id);
+
         Task<T> GetById(int id);
 
         Task<IEnumerable<T>> GetAll();
