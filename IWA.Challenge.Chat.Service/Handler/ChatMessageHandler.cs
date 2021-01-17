@@ -1,4 +1,5 @@
 ﻿using IWA.Challenge.Chat.Service.Manager;
+using Newtonsoft.Json;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace IWA.Challenge.Chat.Service.Handler
         {
             var socketId = WebSocketConnectionManager.GetId(socket);
             var message = $"{Encoding.UTF8.GetString(buffer, 0, result.Count)}";
-            await SendMessageToAllAsync(message);
+            await SendMessageToAllAsync(JsonConvert.SerializeObject(message));
         }
     }
 }

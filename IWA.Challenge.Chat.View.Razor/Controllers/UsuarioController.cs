@@ -1,5 +1,6 @@
 ﻿using IWA.Challenge.Chat.View.Razor.Services;
 using IWA.Challenge.Chat.View.Razor.ViewModels;
+using IWA.Challenge.Chat.View.Razor.ViewModels.Usuario;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

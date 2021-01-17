@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model IWA.Challenge.Chat.View.Razor.ViewModels.Usuario.UsuarioGet
 @{
     ViewData["Title"] = "Chat";
 }
@@ -13,9 +13,8 @@
 
                         <div class="card-title">
 
-                            <div class="row">
+                            <div class="row text-center">
                                 <h4 class="ml-5"><strong>Chat</strong></h4>
-                                <img src="~/img/takeBlip.jpg" style="width:100px; height:100px; float: right" />
                             </div>
 
                         </div>
@@ -23,7 +22,16 @@
                     </div>
 
                     <div class="card-body">
-                        <h5>Participando como: @Model</h5>
+                        <div class="row text-center">
+                            <button type="button" onclick="Start()" class="btn btn-success text-light m-2">
+                                Entar
+                            </button>
+                            <button type="button" onclick="Stop()" class="btn btn-danger text-light m-2">
+                                Sair
+                            </button>
+                        </div>
+
+                        <h5>Participando como: @Model.Nome</h5>
                         <div class="ps-container ps-theme-default ps-active-y" id="chat-content" style="overflow-y: scroll !important; height:400px !important;">
                         </div>
                     </div>
@@ -31,8 +39,8 @@
                     <div class="card-footer bg-white">
                         <div class="publisher">
                             <img class="avatar avatar-xs" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
-                            <input class="publisher-input form-control" type="text" placeholder="Digite sua Mensagem" id="MessageField">
-                            <button type="button" onclick="sendMessage()" class="btn btn-success text-light m-2" id="sendMessage">
+                            <input class="publisher-input form-control" type="text" placeholder="Digite sua Mensagem" id="inputMensagem">
+                            <button type="button" class="btn btn-success text-light m-2" id="sendMessage">
                                 Enviar
                             </button>
                         </div>
@@ -46,49 +54,75 @@
 
 @section Scripts {
     <script>
-        let userName = '@Model';
+        const URI = "ws://localhost:54068/public";
         let socket = null;
-        let btnSend = $("#sendMessage");
+        let user = '@Model.Nome';
+        let userId = '@Model.Id';
+        let btnEnviar = $("#sendMessage");
+        let inputMensagem = $("#inputMensagem");
 
         window.onload = function () {
-            var wsUri = "ws://localhost:54068/public";
-            socket = new WebSocket(wsUri);
-            socket.onopen = e => {
-                console.log("socket opened", e);
-            };
-            socket.onclose = function (e) {
-                console.log("socket closed", e);
-            };
+            Start();
+            btnEnviar.click(Enviar);
+            inputMensagem.keyup(function (event) {
+                if (event.keyCode === 13) {
+                    Enviar();
+                }
+            });
+        }
+
+        function Start() {
+            socket = new WebSocket(URI);
+            ConfigureWebSocket(socket);
+        }
+
+        function Stop() {
+            socket.close();
+        }
+
+        function Enviar() {
+            if (socket.readyState == 1) {
+                var mensagem = {
+                    Id: userId,
+                    Usuario: user,
+                    Mensagem: inputMensagem.val()
+                };
+                socket.send(JSON.stringify(mensagem));
+                inputMensagem.val('');
+            }
+        }
+
+        function ConfigureWebSocket(socket) {
+            socket.onopen = function (e) { };
+            socket.onclose = function (e) { };
             socket.onmessage = function (e) {
-                console.log(e);
-                $('#chat-content').append(createMessage(e.data));
+                let data = JSON.parse(e.data);
+                let mensagemRecebida = JSON.parse(data);
+                if (mensagemRecebida.Id == userId) {
+                    $('#chat-content').append(AdicionarMensagem(mensagemRecebida.Usuario, mensagemRecebida.Mensagem));
+                } else {
+                    $('#chat-content').append(AdicionarMensagemOutroUsuario(mensagemRecebida.Usuario, mensagemRecebida.Mensagem));
+                }
             };
-            socket.onerror = function (e) {
-                console.error(e.data);
-            };
+            socket.onerror = function (e) { };
         }
 
-        function sendMessage() {
-            var message = userName + ": " + $('#MessageField').val();
-            socket.send(message);
-            $('#MessageField').val('');
-        }
-
-        function createMessage(message) {
+        function AdicionarMensagem(nome,mensagem) {
             return `<div class="media media-chat">
-                                                                        <img class="avatar" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
-                                                                        <div class="media-body">
-                                                                            <p>${message}</p>
-                                                                        </div>
-                                                                    </div>`;
+                        <img class="avatar" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
+                        <div class="media-body">
+                            <p>${mensagem}-${nome}</p>
+                        </div>
+                    </div>`;
         }
 
-        function createReverseMessage(message) {
+        function AdicionarMensagemOutroUsuario(nome, mensagem) {
             return `<div class="media media-chat media-chat-reverse">
-                                                                        <div class="media-body">
-                                                                            <p>${message}</p>
-                                                                        </div>
-                                                                    </div>`;
+                       <img class="avatar" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
+                       <div class="media-body">
+                          <p>${mensagem}-${nome}</p>
+                       </div>
+                    </div>`;
         }
     </script>
 }

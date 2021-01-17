@@ -1,20 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IWA.Challenge.Chat.View.Razor.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace IWA.Challenge.Chat.View.Razor.Controllers
 {
-    public class SalaController : Controller
+    public class SalaController : BaseController
     {
+        private readonly UsuarioService _usuarioService;
 
-        public SalaController()
+        public SalaController(UsuarioService usuarioService) : base("Sala")
         {
-
+            _usuarioService = usuarioService;
         }
 
         [HttpGet]
-
-        public IActionResult Index(string userName)
+        public async Task<IActionResult> Index(int id)
         {
-            return View("Index", userName);
+            var usuario = await _usuarioService.GetById(Startup.API + "Usuario/" + id);
+            return View("Index", usuario);
         }
 
 

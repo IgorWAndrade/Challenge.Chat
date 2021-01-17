@@ -32,7 +32,7 @@ namespace IWA.Challenge.Chat.Application.Services
                     response.Mensagem = "Usuario Inserido com Sucesso.";
                     response.Data = new
                     {
-                        Nome = obj.Nome
+                        Id = obj.Id
                     };
                 }
                 else
@@ -44,7 +44,7 @@ namespace IWA.Challenge.Chat.Application.Services
                         response.Mensagem = "Usuario Inserido com Sucesso.";
                         response.Data = new
                         {
-                            Nome = obj.Nome
+                            Id = obj.Id
                         };
                     }
                     else
@@ -62,6 +62,34 @@ namespace IWA.Challenge.Chat.Application.Services
                 return response;
             }
 
+        }
+
+        public async Task<ResponseDTO> GetById(int id)
+        {
+            var response = new ResponseDTO();
+            try
+            {
+                var obj = await _usuarioService.GetById(id);
+
+                //Caso tenha apelido será retornado este
+                if (!string.IsNullOrEmpty(obj.Apelido))
+                {
+                    obj.Nome = obj.Apelido;
+                }
+
+                response.Sucesso = true;
+                response.Data = new
+                {
+                    Id = obj.Id,
+                    Nome = obj.Nome
+                };
+            }
+            catch
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Ocorreu um Erro com Servidor. Contate a equipe de TI.";
+            }
+            return response;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IWA.Challenge.Chat.View.Razor.ViewModels.UsuarioPost
+﻿@model IWA.Challenge.Chat.View.Razor.ViewModels.Usuario.UsuarioPost
 
 <style>
     [hidden] {
@@ -111,7 +111,7 @@
 
                     var result = JSON.parse(data);
                     if (result.sucesso == true) {
-                        return window.location.href = "Sala/Index?userName=" + result.data.nome;
+                        return window.location.href = "Sala/Index?Id=" + result.data.id;
                     } else {
                         $('#erroModalValidacoes').html('');
                         let mensagem = `<div class="mt-2 alert alert-warning alert-dismissible" role="alert">

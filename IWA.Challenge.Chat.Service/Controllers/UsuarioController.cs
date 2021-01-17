@@ -32,5 +32,23 @@ namespace IWA.Challenge.Chat.Service.Controllers
                 return BadRequest(result);
             }
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status100Continue)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Get(int id)
+        {
+            var result = await _usuarioApp.GetById(id);
+            if (result.Sucesso)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
     }
 }

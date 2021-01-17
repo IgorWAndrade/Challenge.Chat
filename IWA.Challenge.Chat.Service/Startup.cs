@@ -1,5 +1,3 @@
-using AutoMapper;
-using IWA.Challenge.Chat.Application.Mappings;
 using IWA.Challenge.Chat.Infra.CrossCutting;
 using IWA.Challenge.Chat.Service.Extension;
 using IWA.Challenge.Chat.Service.Handler;

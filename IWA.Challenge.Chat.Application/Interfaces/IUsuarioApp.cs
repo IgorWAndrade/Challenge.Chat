@@ -7,5 +7,6 @@ namespace IWA.Challenge.Chat.Application.Interfaces
     public interface IUsuarioApp : IBaseApp<Usuario>
     {
         Task<ResponseDTO> Add(UsuarioAddDTO usuario);
+        Task<ResponseDTO> GetById(int id);
     }
 }

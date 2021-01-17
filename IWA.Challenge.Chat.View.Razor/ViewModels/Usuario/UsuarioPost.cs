@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace IWA.Challenge.Chat.View.Razor.ViewModels
+namespace IWA.Challenge.Chat.View.Razor.ViewModels.Usuario
 {
     public class UsuarioPost
     {
