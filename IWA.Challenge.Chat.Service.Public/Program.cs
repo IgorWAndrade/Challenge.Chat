@@ -21,7 +21,7 @@ namespace IWA.Challenge.Chat.Service.Public
             {
                 try
                 {
-                    await client.ConnectAsync(new Uri("wss://localhost:44555/public"), CancellationToken.None);
+                    await client.ConnectAsync(new Uri("wss://localhost:53358/public"), CancellationToken.None);
 
                     Console.WriteLine("Conectado!");
                     Program.Connected = true;
