@@ -1,0 +1,138 @@
+﻿<style>
+    .carousel-indicators {
+        background: #2f4357;
+        margin-top: 20px;
+        margin-left: 15%;
+        margin-right: 15%;
+    }
+
+    .carousel-control-prev {
+        background: #2f4357;
+    }
+
+    .carousel-control-next {
+        background: #2f4357;
+    }
+
+    .carousel-item {
+        text-align: center;
+        min-height: 280px;
+    }
+</style>
+
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h3><strong>Passo a Passo</strong></h3>
+            <button type="button" class="close" aria-label="Close" onclick="Fechar()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="container-lg my-3">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- Carousel indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                        <li data-target="#myCarousel" data-slide-to="3"></li>
+                        <li data-target="#myCarousel" data-slide-to="4"></li>
+                        <li data-target="#myCarousel" data-slide-to="5"></li>
+                        <li data-target="#myCarousel" data-slide-to="6"></li>
+                        <li data-target="#myCarousel" data-slide-to="7"></li>
+                        <li data-target="#myCarousel" data-slide-to="8"></li>
+                        <li data-target="#myCarousel" data-slide-to="9"></li>
+                        <li data-target="#myCarousel" data-slide-to="10"></li>
+                        <li data-target="#myCarousel" data-slide-to="11"></li>
+                        <li data-target="#myCarousel" data-slide-to="12"></li>
+                        <li data-target="#myCarousel" data-slide-to="13"></li>
+                        <li data-target="#myCarousel" data-slide-to="14"></li>
+                    </ol>
+                    <!-- Wrapper for carousel items -->
+                    <div class="carousel-inner">
+                        
+                        <div class="bg-light">
+                            <div class="carousel-item active">
+                                <h4>Tela Inicial do Sistema</h4>
+                                <img src="~/img/hellp/1_TelaInicial.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Para iniciar clique no Botão de 'Identificar' para ter acesso ao Chat.</h4>
+                                <img src="~/img/hellp/2_TelaInicialIdentificacao.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Será mostrado um Formúlario para você se identificar melhor no Chat</h4>
+                                <img src="~/img/hellp/3_TelaDeIdentificacao.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Digite seu Nome e Apelido. Sendo Apelido não requerido, mas caso seja informado será utilizado no Chat.</h4>
+                                <img src="~/img/hellp/4_TelaDeIdentificacaoPreenchimento.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Ou use o Login Anonimo</h4>
+                                <img src="~/img/hellp/5_TelaDeIdentificacaoPreenchimentoAnonimo.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Bem-Vindo a Tela inicial do Chat</h4>
+                                <img src="~/img/hellp/6_TelaChat.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Abaixo você pode digitar para conhecer novas pessoas.</h4>
+                                <img src="~/img/hellp/7_TelaChatDigitacao.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Recebendo novas mensagens de outras pessoas.</h4>
+                                <img src="~/img/hellp/8_TelaChatNovasMensagens.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Para encontrar novas pessoas no Chat use esta opção.</h4>
+                                <img src="~/img/hellp/8_TelaChatDescobrindoNovosUsuarios.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Para direcionar uma mensagem você deve escolher uma Pessoa e o Tipo de envio de mensagem. Neste caso Pública</h4>
+                                <img src="~/img/hellp/9_TelaChatRespondendoDirecionadoPublicamente.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>As mensagen enviadas a pessoas são mostradas de forma elegante e diferente.</h4>
+                                <img src="~/img/hellp/10_TelaChatRespostaPublica.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Para direcionar uma mensagem você deve escolher uma Pessoa e o Tipo de envio de mensagem. Neste caso Privado</h4>
+                                <img src="~/img/hellp/11_TelaChatRespondendoDirecionadoExclusivo.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Para sair da sala use esta opção.</h4>
+                                <img src="~/img/hellp/12_TelaChatSaindoDaSala.png" style="width: 75%; height: 50%" />
+                            </div>
+                            <div class="carousel-item">
+                                <h4>Para voltar para sala use esta opção.</h4>
+                                <img src="~/img/hellp/13_TelaChatEntrabdiNaSala.png" style="width: 75%; height: 50%" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Carousel controls -->
+                    <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    function Fechar() {
+        $('.modal').modal('hide');
+    }
+
+</script>

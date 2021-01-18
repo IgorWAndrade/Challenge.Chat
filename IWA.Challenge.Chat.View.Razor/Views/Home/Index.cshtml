@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="page-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row container d-flex justify-content-center">
+            <div class="col-md-10">
+
+                <div class="row">
+                    <h3>Bem-Vindo ao Prototipo do Sistema de Chat</h3>
+                </div>
+
+                <div class="row alert alert-info">
+                    <h5>Para continuar se identifique no botão abaixo</h5>
+                    <hr />
+                    <button type="button" class="btn btn-primary" onclick="ChamarModalTemplate('Adicionar','Usuario')">
+                        Identificar
+                    </button>
+                </div>
+
+                <div class="row alert alert-success">
+                    <h5>Clique no botão que lhe ajudaremos a usar o Chat</h5>
+                    <hr />
+                    <button type="button" class="btn btn-primary" onclick="ChamarModalTemplate('Ajuda','Usuario')">
+                        Ajuda
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    
+}
