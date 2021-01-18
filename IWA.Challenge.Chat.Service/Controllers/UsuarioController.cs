@@ -50,5 +50,42 @@ namespace IWA.Challenge.Chat.Service.Controllers
                 return BadRequest(result);
             }
         }
+
+        [HttpGet]
+        [Route("GetByName/{name}")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status100Continue)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetByName(string name = "")
+        {
+            var result = await _usuarioApp.GetByName(name);
+            if (result.Sucesso)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAll")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status100Continue)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _usuarioApp.GetAll();
+            if (result.Sucesso)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
     }
 }

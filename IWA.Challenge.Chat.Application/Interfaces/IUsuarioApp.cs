@@ -8,5 +8,7 @@ namespace IWA.Challenge.Chat.Application.Interfaces
     {
         Task<ResponseDTO> Add(UsuarioAddDTO usuario);
         Task<ResponseDTO> GetById(int id);
+        Task<ResponseDTO> GetByName(string name);
+        Task<ResponseDTO> GetAll();
     }
 }

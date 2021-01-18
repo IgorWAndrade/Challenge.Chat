@@ -22,17 +22,47 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="row text-center">
-                            <button type="button" onclick="Start()" class="btn btn-success text-light m-2">
-                                Entar
-                            </button>
-                            <button type="button" onclick="Stop()" class="btn btn-danger text-light m-2">
-                                Sair
-                            </button>
-                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <h5>Participando como: @Model.Nome</h5>
+                                <button type="button" onclick="Start()" id="btnStar" class="btn btn-sm btn-success text-light m-2">
+                                    Entar
+                                </button>
+                                <button type="button" onclick="Stop()" id="btnStop" class="btn btn-sm btn-danger text-light m-2">
+                                    Sair
+                                </button>
+                            </div>
 
-                        <h5>Participando como: @Model.Nome</h5>
-                        <div class="ps-container ps-theme-default ps-active-y" id="chat-content" style="overflow-y: scroll !important; height:400px !important;">
+
+                            <div class="row">
+                                <h6>Enviar Mensagem para: </h6>
+                                <div class="w-100 ml-2">
+                                    <div class="row">
+                                        <button class="btn btn-primary mr-2" onclick="CarregarUsuarios()" id="btnCarregarUsuarios">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
+                                                <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
+                                            </svg>
+                                        </button>
+                                        <div class="w-50 mr-2">
+                                            <select class="form-control" name="Usuarios[]" id="Usuarios" style="width: 100%">
+                                                <option value="0">Selecione uma opção</option>
+                                            </select>
+                                        </div>
+                                        <div class="w-25">
+                                            <select class="form-control" name="Opcoes[]" id="Opcoes" style="width: 100%">
+                                                <option value="0">Selecione uma opção</option>
+                                                <option value="1">Público</option>
+                                                <option value="2">Privado</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content" style="overflow-y: scroll !important; height:400px !important;">
+                            </div>
                         </div>
                     </div>
 
@@ -40,7 +70,7 @@
                         <div class="publisher">
                             <img class="avatar avatar-xs" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
                             <input class="publisher-input form-control" type="text" placeholder="Digite sua Mensagem" id="inputMensagem">
-                            <button type="button" class="btn btn-success text-light m-2" id="sendMessage">
+                            <button type="button" class="btn btn-success text-light m-2" id="enviar">
                                 Enviar
                             </button>
                         </div>
@@ -58,7 +88,7 @@
         let socket = null;
         let user = '@Model.Nome';
         let userId = '@Model.Id';
-        let btnEnviar = $("#sendMessage");
+        let btnEnviar = $("#enviar");
         let inputMensagem = $("#inputMensagem");
 
         window.onload = function () {
@@ -74,22 +104,57 @@
         function Start() {
             socket = new WebSocket(URI);
             ConfigureWebSocket(socket);
+            Ativar();
+        }
+
+        function Ativar() {
+            $("#btnStop").removeAttr("disabled");
+            $("#Usuarios").removeAttr("disabled");
+            $("#btnCarregarUsuarios").removeAttr("disabled");
+            $("#Opcoes").removeAttr("disabled");
+            $("#enviar").removeAttr("disabled");
+            $("#inputMensagem").removeAttr("disabled");
         }
 
         function Stop() {
             socket.close();
+            Desativar();
+        }
+
+        function Desativar() {
+            $("#btnStop").attr("disabled", "disabled");
+            $("#Usuarios").attr("disabled", "disabled");
+            $("#btnCarregarUsuarios").attr("disabled", "disabled");
+            $("#Opcoes").attr("disabled", "disabled");
+            $("#enviar").attr("disabled", "disabled");
+            $("#inputMensagem").attr("disabled", "disabled");
         }
 
         function Enviar() {
-            if (socket.readyState == 1) {
+            if (socket.readyState == 1 && Validar(inputMensagem.val())) {
+                var usuario = document.getElementById("Usuarios");
+                var opcao = document.getElementById("Opcoes");
+
+                let nomeSelecionado = $("#Usuarios option:selected").text();
+
                 var mensagem = {
                     Id: userId,
                     Usuario: user,
-                    Mensagem: inputMensagem.val()
+                    Mensagem: inputMensagem.val(),
+                    Hora: ConfigurarData(),
+                    ParaUsuario: {
+                        Id: usuario.value,
+                        Usuario: nomeSelecionado
+                    },
+                    Opcao: opcao.value
                 };
                 socket.send(JSON.stringify(mensagem));
                 inputMensagem.val('');
             }
+        }
+
+        function ConfigurarData() {
+            return new Date().getHours() + ':' + new Date().getMinutes();
         }
 
         function ConfigureWebSocket(socket) {
@@ -98,30 +163,95 @@
             socket.onmessage = function (e) {
                 let data = JSON.parse(e.data);
                 let mensagemRecebida = JSON.parse(data);
+
                 if (mensagemRecebida.Id == userId) {
-                    $('#chat-content').append(AdicionarMensagem(mensagemRecebida.Usuario, mensagemRecebida.Mensagem));
-                } else {
-                    $('#chat-content').append(AdicionarMensagemOutroUsuario(mensagemRecebida.Usuario, mensagemRecebida.Mensagem));
+
+                    if (mensagemRecebida.Opcao == 1) {
+                        $('#chat-content').append(AdicionarMensagemParaUsuarioPublico(mensagemRecebida, mensagemRecebida.ParaUsuario));
+                    }
+                    else if (mensagemRecebida.Opcao == 2) {
+                        $('#chat-content').append(AdicionarMensagemParaUsuarioPrivado(mensagemRecebida, mensagemRecebida.ParaUsuario));
+                    }
+                    else {
+                        $('#chat-content').append(AdicionarMensagem(mensagemRecebida));
+                    }
+                }
+                //Privada
+                else if (mensagemRecebida.Opcao == 2 && userId == mensagemRecebida.ParaUsuario.Id) {
+                    $('#chat-content').append(AdicionarMensagemParaUsuarioPrivado(mensagemRecebida, mensagemRecebida.ParaUsuario));
+                }
+                else {
+                    //Direta para Chat
+                    if (mensagemRecebida.Opcao == 0) {
+                        $('#chat-content').append(AdicionarMensagemOutroUsuario(mensagemRecebida));
+                    }
+                    //Publica
+                    else if (mensagemRecebida.Opcao == 1) {
+                        $('#chat-content').append(AdicionarMensagemParaUsuarioPublico(mensagemRecebida, mensagemRecebida.ParaUsuario));
+                    }
                 }
             };
             socket.onerror = function (e) { };
         }
 
-        function AdicionarMensagem(nome,mensagem) {
+        function CarregarUsuarios() {
+            $.ajax({
+                url: MontarURL('BuscarTodos', 'Usuario'),
+                method: 'Get',
+                async: true,
+                success: (data) => {
+                    let select = document.getElementById('Usuarios');
+
+                    //Remover
+                    for (var i = 0; i < select.options.length; i++) {
+                        select.remove(i);
+                    }
+
+                    //Adicionar
+                    for (var i = 0; i < data.length; i++) {
+                        let opt = document.createElement('option');
+                        let opcao = data[i];
+                        opt.value = opcao.value;
+                        opt.innerHTML = opcao.text;
+                        select.appendChild(opt);
+                    }
+                }
+            });
+        }
+
+        function AdicionarMensagem(mensagemRecebida) {
             return `<div class="media media-chat">
-                        <img class="avatar" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
                         <div class="media-body">
-                            <p>${mensagem}-${nome}</p>
+                            <div class="row">${mensagemRecebida.Usuario}</div>
+                            <div class="row"><p>${mensagemRecebida.Mensagem}   <time style="font-size:65%;">${mensagemRecebida.Hora}</time></p></div>
                         </div>
                     </div>`;
         }
 
-        function AdicionarMensagemOutroUsuario(nome, mensagem) {
+        function AdicionarMensagemOutroUsuario(mensagemRecebida) {
             return `<div class="media media-chat media-chat-reverse">
-                       <img class="avatar" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
                        <div class="media-body">
-                          <p>${mensagem}-${nome}</p>
+                          <div class="row">${mensagemRecebida.Usuario}</div>
+                          <div class="row"><p>${mensagemRecebida.Mensagem}   <time style="font-size:65%;">${mensagemRecebida.Hora}</time></p></div>
                        </div>
+                    </div>`;
+        }
+
+        function AdicionarMensagemParaUsuarioPublico(mensagemRecebida, mensagemRecebidaParaDestinatario) {
+            return `<div class="media media-chat">
+                        <div class="media-body">
+                            <div class="row bg-dark text-light">${mensagemRecebida.Usuario} enviou mensagem para ${mensagemRecebidaParaDestinatario.Usuario}</div>
+                            <div class="row"><p>${mensagemRecebida.Mensagem}   <time style="font-size:65%;">${mensagemRecebida.Hora}</time></p></div>
+                        </div>
+                    </div>`;
+        }
+
+        function AdicionarMensagemParaUsuarioPrivado(mensagemRecebida, mensagemRecebidaParaDestinatario) {
+            return `<div class="media media-chat">
+                        <div class="media-body">
+                            <div class="row bg-warning text-light">${mensagemRecebida.Usuario} enviou mensagem privada para ${mensagemRecebidaParaDestinatario.Usuario}</div>
+                            <div class="row"><p>${mensagemRecebida.Mensagem}   <time style="font-size:65%;">${mensagemRecebida.Hora}</time></p></div>
+                        </div>
                     </div>`;
         }
     </script>

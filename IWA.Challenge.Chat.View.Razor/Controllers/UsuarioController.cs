@@ -10,7 +10,7 @@ namespace IWA.Challenge.Chat.View.Razor.Controllers
     {
         private readonly UsuarioService _usuarioService;
 
-        public UsuarioController(UsuarioService usuarioService) : base("Usuario") 
+        public UsuarioController(UsuarioService usuarioService) : base("Usuario")
         {
             _usuarioService = usuarioService;
         }
@@ -28,6 +28,19 @@ namespace IWA.Challenge.Chat.View.Razor.Controllers
             return Json(await _usuarioService.Post(APIChildren, usuarioPost));
         }
 
+        [HttpGet]
+        public async Task<ActionResult> BuscarPorNome(string nome = "")
+        {
+            var lista = await _usuarioService.GetByName(string.Format("{0}/GetByName/{1}", APIChildren, nome));
+            return Json(ConverterParaFormatoJson(lista));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> BuscarTodos()
+        {
+            var lista = await _usuarioService.GetAll(string.Format("{0}/GetAll", APIChildren));
+            return Json(ConverterParaFormatoJson(lista));
+        }
 
     }
 }
