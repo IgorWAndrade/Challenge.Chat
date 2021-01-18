@@ -21,6 +21,12 @@ namespace IWA.Challenge.Chat.View.Razor.Controllers
             return View("_Adicionar");
         }
 
+        [HttpGet]
+        public IActionResult Ajuda()
+        {
+            return View("_Ajuda");
+        }
+
         [HttpPost]
         public async Task<IActionResult> Adicionar(UsuarioPost usuarioPost)
         {

@@ -13,8 +13,16 @@
 
                         <div class="card-title">
 
-                            <div class="row text-center">
+                            <div class="row">
                                 <h4 class="ml-5"><strong>Chat</strong></h4>
+                            </div>
+                            <div class="row ml-3">
+                                <button type="button" onclick="Start()" id="btnStar" class="btn btn-success text-light m-2">
+                                    Entar
+                                </button>
+                                <button type="button" onclick="Stop()" id="btnStop" class="btn btn-danger text-light m-2">
+                                    Sair
+                                </button>
                             </div>
 
                         </div>
@@ -25,18 +33,12 @@
                         <div class="container">
                             <div class="row">
                                 <h5>Participando como: @Model.Nome</h5>
-                                <button type="button" onclick="Start()" id="btnStar" class="btn btn-sm btn-success text-light m-2">
-                                    Entar
-                                </button>
-                                <button type="button" onclick="Stop()" id="btnStop" class="btn btn-sm btn-danger text-light m-2">
-                                    Sair
-                                </button>
                             </div>
 
 
                             <div class="row">
                                 <h6>Enviar Mensagem para: </h6>
-                                <div class="w-100 ml-2">
+                                <div class="w-100 ml-4">
                                     <div class="row">
                                         <button class="btn btn-primary mr-2" onclick="CarregarUsuarios()" id="btnCarregarUsuarios">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
